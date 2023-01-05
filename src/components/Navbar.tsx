@@ -8,6 +8,19 @@ function Navbar({}: Props) {
     const [activeIndex, setActiveIndex] = useState(0);
     const indicatorRef = useRef();
     const router = useRouter()
+    useEffect(() => {
+        console.log(window.location.pathname)
+        switch (window.location.pathname){
+            case "/":
+                setActiveIndex(0)
+            case "/gallery":
+                setActiveIndex(1)
+            case "/competition":
+                setActiveIndex(2)
+            case "/user":
+                setActiveIndex(3)
+        }
+      },[])
   return (
     <div className='min-h-full flex items-center m-5'>
         <div className='bg-[#3d3d3d] w-[75px] h-[240px] rounded-[15px]'>
