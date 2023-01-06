@@ -1,68 +1,75 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
-import CredentialsProvider from "next-auth/providers/credentials"
-// Prisma adapter for NextAuth, optional and can be removed
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import Credentials from "next-auth/providers/credentials";
+const bcrypt = require("bcrypt")
 
 import { env } from "../../../env/server.mjs";
 import { prisma } from "../../../server/db";
+import { loginSchema } from "../../../validation/auth";
 
 export const authOptions: NextAuthOptions = {
-  // Include user.id on session
   callbacks: {
-    session({ session, user }) {
-      if (session.user) {
-        session.user.id = user.id;
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
       }
+
+      return token;
+    },
+    session({ session, token }) {
+      if (token && session.user) {
+        session.user.id = token.id as string;
+      }
+
       return session;
     },
   },
-  // Configure one or more authentication providers
-  adapter: PrismaAdapter(prisma),
+  secret: env.NEXTAUTH_SECRET,
+  pages: {
+    signIn: "/user/login",
+    newUser: "/user/register",
+    error: "/user/login",
+  },
   providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
-    }),
-    CredentialsProvider({
-      // The name to display on the sign in form (e.g. 'Sign in with...')
-      name: 'Credentials',
-      // The credentials is used to generate a suitable form on the sign in page.
-      // You can specify whatever fields you are expecting to be submitted.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
+    Credentials({
+      name: "credentials",
       credentials: {
-        username: { label: "Email", type: "text", placeholder: "jsmith" },
-        password: {  label: "Password", type: "password" }
+        email: {
+          label: "Email",
+          type: "email",
+          placeholder: "jsmith@gmail.com",
+        },
+        password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
-        // You need to provide your own logic here that takes the credentials
-        // submitted and returns either a object representing a user or value
-        // that is false/null if the credentials are invalid.
-        // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-        // You can also use the `req` object to obtain additional parameters
-        // (i.e., the request IP address)
-        const res = await fetch("/api/user", {
-          method: 'POST',
-          body: JSON.stringify(credentials),
-          headers: { "Content-Type": "application/json" }
-        })
+      authorize: async (credentials) => {
+        const cred = await loginSchema.parseAsync(credentials);
 
-        const user = await res.json()
-  
-        // If no error and we have user data, return it
-        if (res.ok && user) {
-          return user
+        const user = await prisma.user.findFirst({
+          where: { email: cred.email },
+        });
+
+        if (!user) {
+          return null;
         }
-        // Return null if user data could not be retrieved
-        return null
-      }
-    })
+
+        const isValidPassword = bcrypt.compareSync(
+          cred.password,
+          user.password
+        );
+
+        if (!isValidPassword) {
+          return null;
+        }
+
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+        };
+      },
+    }),
     // ...add more providers here
   ],
-  pages: {
-    signIn: '/user'
-  }
 };
 
 export default NextAuth(authOptions);

@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react'
 import { Home, Image, Award, User } from 'react-feather';
+import { motion } from 'framer-motion';
 type Props = {
 }
 
@@ -9,21 +10,36 @@ function Navbar({}: Props) {
     const indicatorRef = useRef();
     const router = useRouter()
     useEffect(() => {
-        console.log(window.location.pathname)
-        switch (window.location.pathname){
-            case "/":
-                setActiveIndex(0)
-            case "/gallery":
-                setActiveIndex(1)
-            case "/competition":
-                setActiveIndex(2)
-            case "/user":
-                setActiveIndex(3)
+        if(window.location.pathname.includes("/user")){
+            setActiveIndex(3)
+        }
+        if(window.location.pathname.includes("/gallery")){
+            setActiveIndex(1)
+        }
+        if(window.location.pathname.includes("/competition")){
+            setActiveIndex(2)
+        }
+        if(window.location.pathname == "/"){
+            setActiveIndex(0)
         }
       },[])
   return (
     <div className='min-h-full flex items-center m-5'>
-        <div className='bg-[#3d3d3d] w-[75px] h-[240px] rounded-[15px]'>
+        <motion.div className='bg-[#3d3d3d] w-[75px] h-[240px] rounded-[15px]'
+                initial={{
+                    x: -150,
+                    opacity: 0,
+                    scale: 0.5
+                }}
+                animate={{
+                    x: 0,
+                    opacity: 1,
+                    scale: 1
+                }}
+                transition={{
+                    duration: 1,
+                }}
+        >
             <div className='flex flex-col justify-start p-[13px]'>
             <div
                 ref={indicatorRef}
@@ -45,7 +61,7 @@ function Navbar({}: Props) {
                     <User className='z-10' color={activeIndex == 3 ? "#3d3d3d": "#fbfbfb"}/>
                 </button>
             </div>
-        </div>
+        </motion.div>
     </div>
   )
 }

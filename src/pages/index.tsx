@@ -9,11 +9,12 @@ import Navbar from "../components/Navbar";
 
 const Home: NextPage = () => {
   // const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
+  const session = useSession()
+  console.log(session)
   return (
-    <>
-
-    </>
+    <div className='w-full min-h-full flex justify-center items-center'>
+      <h1 className="text-[50px] font-bold tracking-widest">COMING SOON...</h1>
+    </div>
   );
 };
 
