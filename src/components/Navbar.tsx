@@ -1,11 +1,13 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react'
-import { Home, Image, Award, User } from 'react-feather';
+import { Home, Image, Award, User, Plus, PlusCircle, PlusSquare, UserPlus, FolderPlus } from 'react-feather';
+import { useSession, signIn, getCsrfToken  } from "next-auth/react"
 import { motion } from 'framer-motion';
 type Props = {
 }
 
 function Navbar({}: Props) {
+    const { data: session } = useSession()
     const [activeIndex, setActiveIndex] = useState(0);
     const indicatorRef = useRef();
     const router = useRouter()
@@ -24,8 +26,8 @@ function Navbar({}: Props) {
         }
       },[])
   return (
-    <div className='min-h-full flex items-center m-5'>
-        <motion.div className='bg-[#3d3d3d] w-[75px] h-[240px] rounded-[15px]'
+    <div className='max-h-screen flex items-center'>
+        <motion.div className='bg-[#3d3d3d] w-[75px] h-[240px] rounded-[15px] fixed m-5 shadow-3xl z-20'
                 initial={{
                     x: -150,
                     opacity: 0,
@@ -62,6 +64,30 @@ function Navbar({}: Props) {
                 </button>
             </div>
         </motion.div>
+        {session && <motion.div className='bg-transparent w-[75px] p-4 h-[75px] rounded-[15px] fixed ml-5 shadow-3xl z-10 flex justify-center items-center'
+                initial={{
+                    x: 0,
+                    y: 100,
+                    opacity: 0,
+                }}
+                animate={{
+                    x: 0,
+                    y: 155,
+                    opacity: 1,
+                }}
+                transition={{
+                    duration: 1,
+                    delay:0.75,
+                    ease:"backIn"
+                }}
+        >            
+        <div
+        ref={indicatorRef}
+        className="bg-[#6A8E7F] absolute w-[55px] h-[55px] rounded-[15px]"></div>
+                <button key={0} onClick={() => {setActiveIndex(0);router.push("/gallery/add")}} className='z-10 w-[47px] h-[47px] flex justify-center items-center rounded-[15px]'>
+                    <Plus size={35} color="#fbfbfb"/>
+                </button>
+        </motion.div>}
     </div>
   )
 }

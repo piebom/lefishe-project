@@ -20,7 +20,7 @@ export default function Loginform({}: Props) {
       await signIn("credentials", { ...data, callbackUrl: "/user" });
     };
   return (
-    <div className='shadow-2xl bg-white ml-[-115px] w-[400px] h-fit rounded-[15px] p-10 flex flex-col'>
+    <div className='shadow-2xl bg-white w-[400px] h-fit rounded-[15px] p-10 flex flex-col'>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
         {error && (
           <p className="text-center text-red-600">Login failed, try again!</p>
