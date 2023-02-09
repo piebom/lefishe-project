@@ -42,19 +42,32 @@ model Session {
 }
 
 model Vangst {
-  id          String    @id @default(cuid())
-  name        String?
+  id          String     @id @default(cuid())
   date        DateTime?
   description String?
   weight      Float
   imageURL    String
   userId      String
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  aas         String     @default("")
+  locatieId   String     @default("")
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  locatie     Locatie    @relation(fields: [locatieId], references: [id], onDelete: Cascade)
+  Favorite    Favorite[]
+}
+
+model Favorite {
+  id       String @id @default(cuid())
+  userId   String
+  vangstId String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vangst   Vangst @relation(fields: [vangstId], references: [id], onDelete: Cascade)
 }
 
 model Locatie {
-    id          String @id @default(cuid())
-    Locatie     String?
+  id      String  @id @default(cuid())
+  Locatie String?
+
+  Vangst Vangst[]
 }
 
 model User {
@@ -68,6 +81,7 @@ model User {
   accounts Account[]
   sessions Session[]
   Vangst   Vangst[]
+  Favorite Favorite[]
 }
 
 model VerificationToken {

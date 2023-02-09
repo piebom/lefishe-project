@@ -22,4 +22,12 @@ export const userRouter = createTRPCRouter({
             }
         })
   }),
+  getUserById: publicProcedure.input(z.object({id: z.string()})).query(({ctx,input}) => {
+    const result = ctx.prisma.user.findFirst({
+      where: {
+        id: input.id,
+      }
+    })
+    return result
+  })
 });

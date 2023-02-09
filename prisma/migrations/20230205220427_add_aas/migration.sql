@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `vangst` ADD COLUMN `aas` VARCHAR(191) NOT NULL DEFAULT '';

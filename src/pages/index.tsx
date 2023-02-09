@@ -16,13 +16,13 @@ const Home: NextPage = () => {
   // const hello = api.example.hello.useQuery({ text: "from tRPC" });
   const session = useSession()
   const imagesSlide1 = ["lake1.jpg","lake2.jpg"]
-  const imagesSlide2 = ["lake3.jpg","lake4.jpg"]
+  const imagesSlide2 = ["niel1.jpg","niel2.jpg","niel3.jpg"]
   const [sliderRef] = useKeenSlider({
     mode: "free-snap",
     slides: {
       origin: "center",
       perView: 2,
-      spacing: 15,
+      spacing: 10,
     },
   })
   const isPresent = useIsPresent();
@@ -35,9 +35,9 @@ const Home: NextPage = () => {
         style={{ originX: isPresent ? 0 : 1 }}
         className="privacy-screen"
       /> */}
-      <section className='min-h-screen w-screen flex flex-col justify-center items-center bg-indexbg bg-[length:100%_100%] snap-center'>
-      <h1 className="text-[50px] font-bold tracking-widest">LE FISHE</h1>
-      <p className="font-sans">A group of friends who likes to catch and share fishes</p>
+      <section className='min-h-screen w-screen relative flex flex-col justify-center items-center bg-bottom bg-no-repeat bg-indexbg bg-[length:100%_30vh] lg: bg-[length:100%_100vh] snap-center'>
+      <h1 className="text-[40px] lg:text-[50px] font-bold tracking-widest">LE FISHE</h1>
+      <p className="font-sans lg:text-[20px] text-[14px]">A group of friends who likes to catch and share fishes</p>
         <ul className="flex mt-5 space-x-10">
           <li>
             <a className="underline uppercase tracking-widest font-bold" href="#about">About</a>
@@ -66,8 +66,8 @@ const Home: NextPage = () => {
           <Image alt="trout" src="/fish1.png" width={250} height={250}></Image>
         </motion.div> */}
       </section>
-      <section id="about" className="min-h-screen w-screen flex justify-center items-center bg-gradient-to-b snap-center from-[#003e78] to-[#003260] space-x-10">
-        <div className="flex space-x-10 h-fit mb-[150px]">
+      <section id="about" className="min-h-screen w-screen flex justify-center items-center bg-gradient-to-b snap-start from-[#003e78] to-[#003260] space-x-10">
+        <div className="flex overflow-x-auto lg:overflow-x-hidden snap-x snap-mandatory relative overflow-y-hidden min-w-screen space-x-10 h-fit mb-[150px]">
         <UserCard imageURL="/jonas.jpg" naam="Jonas Van De Velde" bijnaam="Njörd Günderson" bio="Ik ben Jonas, a.k.a Njörd Günderson. Mijn visserij is heel allround en zo ben ik ben van alle markten een beetje thuis. Mijn passie ligt bij het vissen in Frankrijk op de grote meren, rivieren en kanaaltjes. 
                     Eén doel: 20kg+"/>
         <UserCard imageURL="/brendon.jpg" naam="Brendon Poppe" bijnaam="Andrew Tate / Pop-up master" bio="Ik ben Brendon, ook gekend als andrew teedt of pop-up master. Hoewel ik nog zeer nieuw ben in het vissen heb ik al op verschillende wateren mijn vis gevangen. Dit jaar wordt voor mij veel experimenteren zo doe ik dit bv al met mijn pop-ups aan te passen. Mijn doel: dubbel run 25+"/>
@@ -95,7 +95,7 @@ const Home: NextPage = () => {
         <div className="relative -top-6">
           <p className="text-white font-bold text-3xl">Locaties</p>
         </div>
-        <div ref={sliderRef} className="keen-slider">
+        <div ref={sliderRef} className="keen-slider h-[50vh]">
           <div className="keen-slider__slide number-slide1 relative">
             <LocationCard title="Oude durme - Hamme" bio="Oude durme: Dit is een mooi water in de regio hamme. Dit water is voornamelijk opstakel visserei. De krabben zijn er in de warme maanden zeer aanwezig maar de vis die er zit is zeker de moeite waard! Aanrader --> gele pop-ups en snowman" images={imagesSlide1}/>
           </div>

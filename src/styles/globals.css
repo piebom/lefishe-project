@@ -7,6 +7,9 @@ html {
     overflow-x: hidden;
     scroll-snap-type: y mandatory;
 }
+html, body{
+  width: 100% !important;
+}
 
 .navigation-wrapper {
   position: relative;

@@ -33,6 +33,7 @@
     "react-feather": "^2.0.10",
     "react-hook-form": "^7.41.5",
     "react-query": "^3.39.3",
+    "react-select": "^5.7.0",
     "save": "^2.9.0",
     "superjson": "1.9.1",
     "zod": "^3.20.2"

@@ -27,7 +27,7 @@ function Navbar({}: Props) {
       },[])
   return (
     <div className='max-h-screen flex items-center'>
-        <motion.div className='bg-[#3d3d3d] w-[75px] h-[240px] rounded-[15px] fixed m-5 shadow-3xl z-20'
+        <motion.div className='bg-[#3d3d3d] w-[75px] h-[240px] rounded-[15px] fixed m-5 shadow-3xl z-20 lg:visible invisible'
                 initial={{
                     x: -150,
                     opacity: 0,
@@ -64,7 +64,7 @@ function Navbar({}: Props) {
                 </button>
             </div>
         </motion.div>
-        {session && <motion.div className='bg-transparent w-[75px] p-4 h-[75px] rounded-[15px] fixed ml-5 shadow-3xl z-10 flex justify-center items-center'
+        {/* {session && <motion.div className='bg-transparent w-[75px] p-4 h-[75px] rounded-[15px] fixed ml-5 shadow-3xl z-10 flex justify-center items-center'
                 initial={{
                     x: 0,
                     y: 100,
@@ -87,7 +87,7 @@ function Navbar({}: Props) {
                 <button key={0} onClick={() => {setActiveIndex(0);router.push("/gallery/add")}} className='z-10 w-[47px] h-[47px] flex justify-center items-center rounded-[15px]'>
                     <Plus size={35} color="#fbfbfb"/>
                 </button>
-        </motion.div>}
+        </motion.div>} */}
     </div>
   )
 }

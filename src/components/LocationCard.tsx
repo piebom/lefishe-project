@@ -40,16 +40,16 @@ function LocationCard({title, images, bio}: Props) {
         },
       })
   return (
-    <div className='relative'>
-      <div className="navigation-wrapper">
-      <div ref={sliderRef} className="relative h-[500px]">
+    <div className='relative w-[100%] ml-auto mr-auto h-[100%]'>
+      <div className="navigation-wrapper min-h-[90%]">
+      <div ref={sliderRef} className="relative w-[100%] min-h-[250px]">
       {images.map((src, idx) => (
         <div
           key={idx}
-          className="w-[100%] h-[100%] absolute top-0"
+          className="w-[100%] min-h-[250px] absolute top-0"
           style={{ opacity: opacities[idx] }}
         >
-          <Image alt='lake' src={"/" + src} width={1000} height={1000} className="rounded-2xl max-h-[535px] shadow-3xl -z-10"/>
+          <Image alt='lake' src={"/" + src} width={1000} height={1000} className="min-h-[250px] max-h-[250px] lg:max-h-[450px] rounded-2xl shadow-3xl -z-10"/>
         </div>
       ))}
     </div>
@@ -104,7 +104,7 @@ function LocationCard({title, images, bio}: Props) {
         transition={{
             duration:0.5,
         }}
-        className='bg-[#3d3d3d] w-[50px] z-30 h-[50px] rounded-2xl absolute bottom-8 right-0 m-2 flex justify-center items-center shadow-3xl' onHoverStart={() => setIsOpen(true)} onHoverEnd={() => setIsOpen(false)}>
+        className='invisible lg:visible bg-[#3d3d3d] w-[50px] z-30 h-[50px] rounded-2xl absolute bottom-14 right-0 m-2 flex justify-center items-center shadow-3xl' onHoverStart={() => setIsOpen(true)} onHoverEnd={() => setIsOpen(false)}>
             <motion.div
             animate={isOpen ? "open" : "closed"}
             variants={variants1}
@@ -123,8 +123,9 @@ function LocationCard({title, images, bio}: Props) {
                 {bio}
             </motion.p>
         </motion.div>
-        <div className='bg-[#fbfbfb00] w-[100%] h-[30px] relative left-0 right-auto -bottom-2 rounded-md m-2 flex items-center justify-center'>
+        <div className='bg-[#fbfbfb00] w-[100%] h-fit flex-col relative left-0 right-auto bottom-20 rounded-md ml-5 flex items-start justify-center'>
             <p className='text-white font-bold text-lg m-0 p-0'>{title}</p>
+            <p className='visible lg:invisible text-white text-lg m-0 p-0'>{bio}</p>
         </div>
     </div>
   )
