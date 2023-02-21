@@ -17,6 +17,7 @@ function index({}: Props) {
   if (session && status === "authenticated") {
     return(
       <div className='w-full min-h-screen flex justify-center items-center'>
+        <h1>welcome</h1>
       </div>
     )
   }

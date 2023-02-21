@@ -40,7 +40,7 @@ function LocationCard({title, images, bio}: Props) {
         },
       })
   return (
-    <div className='relative w-[100%] ml-auto mr-auto h-[100%]'>
+    <div className='relative w-[650px] ml-auto mr-auto h-fit'>
       <div className="navigation-wrapper min-h-[90%]">
       <div ref={sliderRef} className="relative w-[100%] min-h-[250px]">
       {images.map((src, idx) => (
