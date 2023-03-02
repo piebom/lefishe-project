@@ -25,7 +25,7 @@ function LocationCard2({name,location,img}: Props) {
         <h1 className='z-20 relative text-white font-bold text-5xl drop-shadow-2xl'>{name}</h1>
         <h1 className='z-20 relative text-white text-4xl drop-shadow-2xl'>{location}</h1>
         </div>
-        <Image alt='niel' src={img} fill className='rounded-lg z-10' style={{objectFit:"cover"}} />
+        <Image alt='niel' src={img} fill className='rounded-lg z-10 blur-[2px]' style={{objectFit:"cover"}} />
         <motion.button variants={variants} transition={{delay:0.2}} className='w-fit pl-14 pr-14 h-[40px] shadow-2xl bg-[#6A8E7F] rounded-lg absolute bottom-0 mb-10 z-20 text-white font-bold text-xl'>
             DISCOVER
         </motion.button>
