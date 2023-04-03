@@ -16,6 +16,14 @@
     "incremental": true,
     "noUncheckedIndexedAccess": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.mjs", "src/components/LocationCard.jsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.cjs",
+    "**/*.mjs",
+    "src/components/LocationCard.jsx",
+    "next.config.js"
+  ],
   "exclude": ["node_modules"]
 }
