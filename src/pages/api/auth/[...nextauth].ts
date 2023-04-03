@@ -1,6 +1,6 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-const bcrypt = require("bcrypt")
+import bcrypt from "bcryptjs";
 
 import { env } from "../../../env/server.mjs";
 import { prisma } from "../../../server/db";

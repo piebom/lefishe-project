@@ -1,25 +1,24 @@
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
-import React from 'react'
-import Registerform from '../../components/Registerform'
-import {motion,useIsPresent} from "framer-motion"
-type Props = {}
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import React from "react";
+import Registerform from "../../components/Registerform";
+import { motion, useIsPresent } from "framer-motion";
+type Props = {};
 
-function register({}: Props) {
-  const { data: session } = useSession()
-  const router = useRouter()
-  if(session)
-  {
-    router.push("/user")
+function Register({}: Props) {
+  const { data: session } = useSession();
+  const router = useRouter();
+  if (session) {
+    router.push("/user");
   }
   const isPresent = useIsPresent();
   return (
     <>
-    <div className='w-full min-h-screen flex justify-center items-center'>
-      <Registerform/>
-    </div>
+      <div className="flex min-h-screen w-full items-center justify-center">
+        <Registerform />
+      </div>
     </>
-  )
+  );
 }
 
-export default register
+export default Register;

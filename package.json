@@ -19,6 +19,7 @@
     "@trpc/server": "10.0.0-proxy-beta.15",
     "aws-sdk": "^2.1304.0",
     "bcrypt": "^5.1.0",
+    "bcryptjs": "^2.4.3",
     "feather-icons": "^4.29.0",
     "framer-motion": "^8.1.9",
     "keen-slider": "^6.8.5",

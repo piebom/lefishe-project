@@ -1,70 +1,76 @@
-import Image from 'next/image'
-import React, { useState } from 'react'
-import { Info } from 'react-feather'
-import {motion} from "framer-motion"
-import { useKeenSlider } from "keen-slider/react"
-import "keen-slider/keen-slider.min.css"
-  type Props = {
-    title : string,
-    images : string[],
-    bio : string,
-}
-function LocationCard({title, images, bio}: Props) {
-    const [isOpen, setIsOpen] = useState(false)
-    const [currentSlide, setCurrentSlide] = React.useState(0)
-    const [loaded, setLoaded] = useState(false)
-    const variants = {
-        open: { opacity: [0,0,0,0,0,0,1], display: 'block'},
-        closed: { opacity: 0 ,display: 'none'},
-      }
-      const variants1 = {
-        open: { opacity: 0},
-        closed: { opacity: 1 },
-      }
-      const [opacities, setOpacities] = React.useState([])
+import Image from "next/image";
+import React, { useState } from "react";
+import { Info } from "react-feather";
+import { motion } from "framer-motion";
+import { useKeenSlider } from "keen-slider/react";
+import "keen-slider/keen-slider.min.css";
+type Props = {
+  title: string;
+  images: string[];
+  bio: string;
+};
+function LocationCard({ title, images, bio }: Props) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentSlide, setCurrentSlide] = React.useState(0);
+  const [loaded, setLoaded] = useState(false);
+  const variants = {
+    open: { opacity: [0, 0, 0, 0, 0, 0, 1], display: "block" },
+    closed: { opacity: 0, display: "none" },
+  };
+  const variants1 = {
+    open: { opacity: 0 },
+    closed: { opacity: 1 },
+  };
+  const [opacities, setOpacities] = useState<number[]>([]);
 
-      const [sliderRef,instanceRef] = useKeenSlider({
-        slides: images.length,
-        drag: false,
-        loop: true,
-        detailsChanged(s) {
-          const t = s.track.details.slides.map((slide) => slide.portion)
-          setOpacities(t)
-        },
-        initial: 0,
-        slideChanged(slider) {
-          setCurrentSlide(slider.track.details.rel)
-        },
-        created() {
-          setLoaded(true)
-        },
-      })
+  const [sliderRef, instanceRef] = useKeenSlider({
+    slides: images.length,
+    drag: false,
+    loop: true,
+    detailsChanged(s) {
+      const t: number[] = s.track.details.slides.map((slide) => slide.portion);
+      setOpacities(t);
+    },
+    initial: 0,
+    slideChanged(slider) {
+      setCurrentSlide(slider.track.details.rel);
+    },
+    created() {
+      setLoaded(true);
+    },
+  });
   return (
-    <div className='relative w-[650px] ml-auto mr-auto h-fit'>
+    <div className="relative ml-auto mr-auto h-fit w-[650px]">
       <div className="navigation-wrapper min-h-[90%]">
-      <div ref={sliderRef} className="relative w-[100%] min-h-[250px]">
-      {images.map((src, idx) => (
-        <div
-          key={idx}
-          className="w-[100%] min-h-[250px] absolute top-0"
-          style={{ opacity: opacities[idx] }}
-        >
-          <Image alt='lake' src={"/" + src} width={1000} height={1000} className="min-h-[250px] max-h-[250px] lg:max-h-[450px] rounded-2xl shadow-3xl -z-10"/>
+        <div ref={sliderRef} className="relative min-h-[250px] w-[100%]">
+          {images.map((src, idx) => (
+            <div
+              key={idx}
+              className="absolute top-0 min-h-[250px] w-[100%]"
+              style={{ opacity: opacities[idx] }}
+            >
+              <Image
+                alt="lake"
+                src={"/" + src}
+                width={1000}
+                height={1000}
+                className="-z-10 max-h-[250px] min-h-[250px] rounded-2xl shadow-3xl lg:max-h-[450px]"
+              />
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
-    {loaded && instanceRef.current && (
+        {loaded && instanceRef.current && (
           <>
             <Arrow
               left
-              onClick={(e: any) =>
+              onClick={(e) =>
                 e.stopPropagation() || instanceRef.current?.prev()
               }
               disabled={currentSlide === 0}
             />
 
             <Arrow
-              onClick={(e: any) =>
+              onClick={(e) =>
                 e.stopPropagation() || instanceRef.current?.next()
               }
               disabled={
@@ -84,58 +90,64 @@ function LocationCard({title, images, bio}: Props) {
               <button
                 key={idx}
                 onClick={() => {
-                  instanceRef.current?.moveToIdx(idx)
+                  instanceRef.current?.moveToIdx(idx);
                 }}
                 className={"dot" + (currentSlide === idx ? " active" : "")}
               ></button>
-            )
+            );
           })}
         </div>
       )}
-        <motion.div 
+      <motion.div
         initial={{
-            width: '50px',
-            height: '50px',
+          width: "50px",
+          height: "50px",
         }}
         whileHover={{
-            width: '400px',
-            height: '40%',
+          width: "400px",
+          height: "40%",
         }}
         transition={{
-            duration:0.5,
+          duration: 0.5,
         }}
-        className='invisible lg:visible bg-[#3d3d3d] w-[50px] z-30 h-[50px] rounded-2xl absolute bottom-14 right-0 m-2 flex justify-center items-center shadow-3xl' onHoverStart={() => setIsOpen(true)} onHoverEnd={() => setIsOpen(false)}>
-            <motion.div
-            animate={isOpen ? "open" : "closed"}
-            variants={variants1}
-            transition={{
-                duration: 0.1,
-            }}
-            className="absolute flex justify-center items-center">
-            <Info color='white'/>
-            </motion.div>
-            <motion.p
-                animate={isOpen ? "open" : "closed"}
-                variants={variants}
-                transition={{
-                    duration:0.6
-                }} className="text-white m-7 min-w-[360px] min-h-[140px]">
-                {bio}
-            </motion.p>
+        className="invisible absolute bottom-14 right-0 z-30 m-2 flex h-[50px] w-[50px] items-center justify-center rounded-2xl bg-[#3d3d3d] shadow-3xl lg:visible"
+        onHoverStart={() => setIsOpen(true)}
+        onHoverEnd={() => setIsOpen(false)}
+      >
+        <motion.div
+          animate={isOpen ? "open" : "closed"}
+          variants={variants1}
+          transition={{
+            duration: 0.1,
+          }}
+          className="absolute flex items-center justify-center"
+        >
+          <Info color="white" />
         </motion.div>
-        <div className='bg-[#fbfbfb00] w-[100%] h-fit flex-col relative left-0 right-auto bottom-20 rounded-md ml-5 flex items-start justify-center'>
-            <p className='text-white font-bold text-lg m-0 p-0'>{title}</p>
-            <p className='visible lg:invisible text-white text-lg m-0 p-0'>{bio}</p>
-        </div>
+        <motion.p
+          animate={isOpen ? "open" : "closed"}
+          variants={variants}
+          transition={{
+            duration: 0.6,
+          }}
+          className="m-7 min-h-[140px] min-w-[360px] text-white"
+        >
+          {bio}
+        </motion.p>
+      </motion.div>
+      <div className="relative left-0 right-auto bottom-20 ml-5 flex h-fit w-[100%] flex-col items-start justify-center rounded-md bg-[#fbfbfb00]">
+        <p className="m-0 p-0 text-lg font-bold text-white">{title}</p>
+        <p className="visible m-0 p-0 text-lg text-white lg:invisible">{bio}</p>
+      </div>
     </div>
-  )
+  );
 }
 function Arrow(props: {
-  disabled: boolean
-  left?: boolean
-  onClick: (e: any) => void
+  disabled: boolean;
+  left?: boolean;
+  onClick: (e: any) => void;
 }) {
-  const disabeld = false ? " arrow--disabled" : ""
+  const disabeld = false ? " arrow--disabled" : "";
   return (
     <svg
       onClick={props.onClick}
@@ -152,6 +164,6 @@ function Arrow(props: {
         <path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z" />
       )}
     </svg>
-  )
+  );
 }
-export default LocationCard
+export default LocationCard;

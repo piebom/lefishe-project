@@ -11,7 +11,7 @@ import { Grid, Square } from "react-feather";
 import { TypeOf } from "zod";
 type Props = {};
 
-function gallery({}: Props) {
+function Gallery({}: Props) {
   const router = useRouter();
   const [value, changeValue] = useState(2);
   const { data: session, status } = useSession();
@@ -46,16 +46,16 @@ function gallery({}: Props) {
     show: { opacity: 1, y: 0 },
   };
   const locatie = api.locatie.getAllLocations.useQuery();
-  var data = api.vangst.getAllVangstByLocationId.useQuery({
+  const data = api.vangst.getAllVangstByLocationId.useQuery({
     locatieId: sessie,
   }).data;
-  var favorites = api.favorite.getAllFavoriteVangstenByUserId.useQuery(
+  const favorites = api.favorite.getAllFavoriteVangstenByUserId.useQuery(
     { userId: session?.user?.id || "" },
     { enabled: !!session?.user?.id }
   ).data;
   useEffect(() => {
     if (favorite) {
-      var v = [];
+      const v: any[] = [];
       favorites?.forEach((element) => {
         v.push(element.vangst);
       });
@@ -87,7 +87,9 @@ function gallery({}: Props) {
           >
             <option>All</option>
             {locatie.data?.map(({ id, Locatie }, index) => (
-              <option value={id}>{Locatie}</option>
+              <option key={id} value={id}>
+                {Locatie}
+              </option>
             ))}
           </select>
         </div>
@@ -99,10 +101,7 @@ function gallery({}: Props) {
             value=""
             className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
           />
-          <label
-            for="checked-checkbox"
-            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-          >
+          <label className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
             Favorites only
           </label>
         </div>
@@ -166,4 +165,4 @@ function gallery({}: Props) {
   );
 }
 
-export default gallery;
+export default Gallery;
