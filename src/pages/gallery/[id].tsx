@@ -1,80 +1,124 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { api } from '../../utils/api';
-import { useSession, signIn, getCsrfToken  } from "next-auth/react"
-import Image from 'next/image'
-import {motion} from "framer-motion"
+import { api } from "../../utils/api";
+import { useSession, signIn, getCsrfToken } from "next-auth/react";
+import Image from "next/image";
+import { motion } from "framer-motion";
 
-type Props = {}
+function Vangst() {
+  const router = useRouter();
+  const [vangstId, setVangstId] = useState<string>("");
+  const { data: session, status } = useSession();
 
-function Vangst({}: Props) {
-    const router = useRouter();
-    const [vangstId, setVangstId] = useState<string>("");
-    const { data: session, status } = useSession()
-
-    useEffect(() => {
-      setVangstId(router.query.id as string);
-    }, [router.query.id]);
-    const mutation1 = api.vangst.deleteVanstById.useMutation({
-      onError: (e) => console.log(e.message),
-      onSuccess: () => router.push("/gallery"),
+  useEffect(() => {
+    setVangstId(router.query.id as string);
+  }, [router.query.id]);
+  const mutation1 = api.vangst.deleteVanstById.useMutation({
+    onError: (e) => console.log(e.message),
+    onSuccess: () => router.push("/gallery"),
   });
-    const mutation2 = api.favorite.createFavorite.useMutation({
-      onError: (e) => console.log(e.message),
-      onSuccess: () => console.log("favorited"),
+  const mutation2 = api.favorite.createFavorite.useMutation({
+    onError: (e) => console.log(e.message),
+    onSuccess: () => console.log("favorited"),
+  });
+  const DeleteVangst = async () => {
+    await mutation1.mutateAsync({ id: vangstId });
+  };
+  console.log(session);
+  const FavoriteVangst = async () => {
+    await mutation2.mutateAsync({
+      userId: session?.user?.id || "",
+      vangstId: vangstId,
+    });
+  };
 
-    })
-    const DeleteVangst = async () => {
-      await mutation1.mutateAsync({id: vangstId});
-    }
-    console.log(session)
-    const FavoriteVangst = async () => {
-      await mutation2.mutateAsync({userId: session?.user?.id || "", vangstId: vangstId})
-    }
+  const { data, error } = api.vangst.getVangstById.useQuery(
+    { id: vangstId },
+    { enabled: !!vangstId }
+  );
+  const user = api.user.getUserById.useQuery(
+    { id: data?.userId as string },
+    { enabled: !!data }
+  ).data;
+  const locatie = api.locatie.getLocatieById.useQuery(
+    { id: data?.locatieId as string },
+    { enabled: !!data }
+  ).data;
 
-    const { data, error } = api.vangst.getVangstById.useQuery({ id: vangstId },{enabled: !!vangstId});
-    const user = api.user.getUserById.useQuery({ id: data?.userId as string },{enabled: !!data}).data;
-    const locatie = api.locatie.getLocatieById.useQuery({ id: data?.locatieId as string },{enabled: !!data}).data;
-
-  if(!data){
-    return <div className='w-full min-h-screen flex flex-col justify-center items-start mt-10 lg:mt-0 lg:items-center'>
-<div role="status">
-    <svg aria-hidden="true" className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
-    </svg>
-    <span className="sr-only">Loading...</span>
-</div>
-    </div>
-  }else{
-  return (
-    <motion.div 
-    initial={{
-      opacity:0,
-      size:0.75,
-    }}
-    animate={{
-      opacity: 1,
-      scale: 1
-  }}
-  transition={{
-      duration: 0.2,
-  }}
-    className='w-full min-h-screen flex flex-col justify-center items-start mt-10 lg:mt-0 lg:items-center'>
-        <Image className='rounded-[15px]' src={data?.imageURL ?? ""} width={450} height={450} alt="image"/>
-        <p className='font-bold text-lg m-2'>Visser: {user?.name}</p>
-        <p className='font-bold text-lg m-2'>date: {data?.date?.toLocaleString()}</p>
-        <p className='font-bold text-lg m-2'>Locatie: {locatie?.Locatie}</p>
-        <p className='font-bold text-lg m-2'>Gewicht: {data?.weight} kg</p>
-        <p className='font-bold text-lg m-2'>Aas: {data?.aas}</p>
-        <p className='font-bold text-lg m-2'>Description: {data?.description}</p>
-        <div className='flex gap-5'>
-          <button onClick={DeleteVangst} className='bg-red-500 rounded-lg pl-5 pr-5 pt-2 pb-2 w-fit h-fit text-white font-bold'>Remove</button>
-          <button onClick={FavoriteVangst} className='bg-yellow-500 rounded-lg pl-5 pr-5 pt-2 pb-2 w-fit h-fit text-white font-bold'>Favorite</button>
+  if (!data) {
+    return (
+      <div className="mt-10 flex min-h-screen w-full flex-col items-start justify-center lg:mt-0 lg:items-center">
+        <div role="status">
+          <svg
+            aria-hidden="true"
+            className="mr-2 h-8 w-8 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600"
+            viewBox="0 0 100 101"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+              fill="currentColor"
+            />
+            <path
+              d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+              fill="currentFill"
+            />
+          </svg>
+          <span className="sr-only">Loading...</span>
         </div>
-    </motion.div>
-  )
-}
+      </div>
+    );
+  } else {
+    return (
+      <motion.div
+        initial={{
+          opacity: 0,
+          size: 0.75,
+        }}
+        animate={{
+          opacity: 1,
+          scale: 1,
+        }}
+        transition={{
+          duration: 0.2,
+        }}
+        className="mt-10 flex min-h-screen w-full flex-col items-start justify-center lg:mt-0 lg:items-center"
+      >
+        <Image
+          className="rounded-[15px]"
+          src={data?.imageURL ?? ""}
+          width={450}
+          height={450}
+          alt="image"
+        />
+        <p className="m-2 text-lg font-bold">Visser: {user?.name}</p>
+        <p className="m-2 text-lg font-bold">
+          date: {data?.date?.toLocaleString()}
+        </p>
+        <p className="m-2 text-lg font-bold">Locatie: {locatie?.Locatie}</p>
+        <p className="m-2 text-lg font-bold">Gewicht: {data?.weight} kg</p>
+        <p className="m-2 text-lg font-bold">Aas: {data?.aas}</p>
+        <p className="m-2 text-lg font-bold">
+          Description: {data?.description}
+        </p>
+        <div className="flex gap-5">
+          <button
+            onClick={DeleteVangst}
+            className="h-fit w-fit rounded-lg bg-red-500 pl-5 pr-5 pt-2 pb-2 font-bold text-white"
+          >
+            Remove
+          </button>
+          <button
+            onClick={FavoriteVangst}
+            className="h-fit w-fit rounded-lg bg-yellow-500 pl-5 pr-5 pt-2 pb-2 font-bold text-white"
+          >
+            Favorite
+          </button>
+        </div>
+      </motion.div>
+    );
+  }
 }
 
-export default Vangst
+export default Vangst;

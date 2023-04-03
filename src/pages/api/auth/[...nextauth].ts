@@ -1,6 +1,5 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
 
 import { env } from "../../../env/server.mjs";
 import { prisma } from "../../../server/db";
@@ -51,6 +50,9 @@ export const authOptions: NextAuthOptions = {
         if (!user) {
           return null;
         }
+
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const bcrypt = require("bcryptjs");
 
         const isValidPassword = bcrypt.compareSync(
           cred.password,

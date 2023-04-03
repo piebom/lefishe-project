@@ -2,7 +2,6 @@ import { registerSchema } from "../../../validation/auth";
 import { TRPCError } from "@trpc/server";
 
 const SALT_ROUNDS = 10;
-import bcrypt from "bcryptjs";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const authRouter = createTRPCRouter({
@@ -20,7 +19,8 @@ export const authRouter = createTRPCRouter({
           message: "User already exists.",
         });
       }
-
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const bcrypt = require("bcryptjs");
       const salt = bcrypt.genSaltSync(SALT_ROUNDS);
       const hash = bcrypt.hashSync(password, salt);
 

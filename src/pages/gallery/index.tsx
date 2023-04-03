@@ -9,9 +9,7 @@ import { api } from "../../utils/api";
 import { useSession, signIn, getCsrfToken } from "next-auth/react";
 import { Grid, Square } from "react-feather";
 import { TypeOf } from "zod";
-type Props = {};
-
-function Gallery({}: Props) {
+function Gallery() {
   const router = useRouter();
   const [value, changeValue] = useState(2);
   const { data: session, status } = useSession();

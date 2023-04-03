@@ -1,6 +1,5 @@
 import { createTRPCRouter } from "./trpc";
 import { userRouter } from "./routers/user";
-import { exampleRouter } from "./routers/example";
 import { authRouter } from "./routers/auth";
 import { vangstRouter } from "./routers/vangst";
 import { locatieRouter } from "./routers/Locatie";
@@ -13,11 +12,10 @@ import { favoriteRouter } from "./routers/favorite";
  */
 export const appRouter = createTRPCRouter({
   user: userRouter,
-  example: exampleRouter,
   auth: authRouter,
   vangst: vangstRouter,
   locatie: locatieRouter,
-  favorite: favoriteRouter
+  favorite: favoriteRouter,
 });
 
 // export type definition of API

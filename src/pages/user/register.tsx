@@ -3,9 +3,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import Registerform from "../../components/Registerform";
 import { motion, useIsPresent } from "framer-motion";
-type Props = {};
-
-function Register({}: Props) {
+function Register() {
   const { data: session } = useSession();
   const router = useRouter();
   if (session) {

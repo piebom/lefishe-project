@@ -3,9 +3,8 @@ import { useRouter } from "next/router";
 import React from "react";
 import Loginform from "../../components/Loginform";
 import { motion, useIsPresent } from "framer-motion";
-type Props = {};
 
-function Login({}: Props) {
+function Login() {
   const { data: session } = useSession();
   const router = useRouter();
   if (session) {

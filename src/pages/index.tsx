@@ -4,9 +4,8 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import WiePage from "../components/WiePage";
 import LocationPage from "../components/LocationPage";
-type Props = {};
 
-function index({}: Props) {
+function index() {
   return (
     <div className="snap-mandatory scroll-smooth">
       <header className="max-w-screen fixed z-20 h-[100px] pt-5">

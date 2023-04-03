@@ -5,9 +5,7 @@ import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import { motion, useIsPresent } from "framer-motion";
 import { GetStaticProps, GetStaticPaths, GetServerSideProps } from "next";
-type Props = {};
-
-function Index({}: Props) {
+function Index() {
   const { data: session, status } = useSession();
   const router = useRouter();
   useEffect(() => {
