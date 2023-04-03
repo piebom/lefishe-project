@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
-type Props = {}
-
-function LocationSpecificPage({}: Props) {
-  return (
-    <div>LocationSpecificPage</div>
-  )
+function LocationSpecificPage() {
+  return <div>LocationSpecificPage</div>;
 }
 
-export default LocationSpecificPage
+export default LocationSpecificPage;

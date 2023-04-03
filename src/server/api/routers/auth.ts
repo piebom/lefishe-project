@@ -2,7 +2,7 @@ import { registerSchema } from "../../../validation/auth";
 import { TRPCError } from "@trpc/server";
 
 const SALT_ROUNDS = 10;
-const bcrypt = require('bcrypt');
+import bcrypt from "bcryptjs";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const authRouter = createTRPCRouter({
