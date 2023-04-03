@@ -13,11 +13,12 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
-  images:{
+  images: {
     domains: [
       `${process.env.S3_UPLOAD_BUCKET}.s3.amazonaws.com`,
       `${process.env.S3_UPLOAD_BUCKET}.s3.${process.env.S3_UPLOAD_REGION}.amazonaws.com`,
+      "lefishe-bucket.s3.eu-central-1.amazonaws.com",
     ],
-  }
+  },
 };
 export default config;
